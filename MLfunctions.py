@@ -90,7 +90,3 @@ def letterDistanceInSentence(s, letter1, letter2):
 
 for statistic in statistics:
     statistic.update("Sometimes I can feel my bones straining under the weight of all the lives I’m not living")
-
-awelkjbf
-awelfhb
-werlyqvwe,jfhvew
