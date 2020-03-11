@@ -16,6 +16,7 @@ import math
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
+# Create class which keeps track of statistical information about each letter combo.
 class Statistic:
     def __init__(self, chars):
         self.chars = chars
