@@ -19,7 +19,7 @@ alphabet = "abcdefghijklmnopqrstuvwxyz"
 class Statistic:
     def __init__(self, chars):
         self.chars = chars
-        self.avg   = 0
+        self.avg = 0
         self.variance = 0
         self.sd = 0
         self.num_sentences = 0
@@ -59,7 +59,7 @@ class Statistic:
 
 
 x = Statistic('the')
-x.update("The pen is mightier than the sword")
+x.update("The pen is mightier than the sword".lower())
 
 statistics = []
 
@@ -90,7 +90,3 @@ def letterDistanceInSentence(s, letter1, letter2):
 
 for statistic in statistics:
     statistic.update("Sometimes I can feel my bones straining under the weight of all the lives I’m not living")
-
-awelkjbf
-awelfhb
-werlyqvwe,jfhvew
