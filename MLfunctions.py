@@ -11,7 +11,7 @@ import math
 # (3) Write a program that determines average number of occurrences of each letter, and every 2, 3, and 4 letter combo
 #     as we input sentences and keeps track of standard deviations for each.
 # (4) Train this on many sentences.
-# (5) Determine a method of making predictions.  (Steps (4) and (5) seem like I should
+# (5) Determine a method of making predictions.  (Steps (4) and (5) seem like I should use NN or ML)
 #
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -83,13 +83,13 @@ def indicator(s, letter):
             distribution.append(0)
     return distribution
 
-# WIP
+# Work in progress lol
 def letterDistanceInSentence(s, letter1, letter2):
     dist1 = indicator(s, letter1)
     dist2 = indicator(s, letter2)
 
-
-
 for statistic in statistics:
     statistic.update("Sometimes I can feel my bones straining under the weight of all the lives I’m not living")
 
+awelkjbf
+awelfhb
