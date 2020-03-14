@@ -1,5 +1,6 @@
 import re
 import math
+import tkinter as tk
 
 # Design neural network to determine if given sentence is in English. I need to figure out a way to
 # allow different sized strings for input into the neural network.
@@ -12,7 +13,13 @@ import math
 #     as we input sentences and keeps track of standard deviations for each.
 # (4) Train this on many sentences.
 # (5) Determine a method of making predictions.  (Steps (4) and (5) seem like I should use NN or ML)
-#
+
+def update_statistics():
+    sentence_input = entry_sentence.get()
+    for statistic in statistics:
+        statistic.update(sentence_input.lower())
+    entry_sentence.delete(0, 'end')
+
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -58,21 +65,16 @@ class Statistic:
         self.variance = self.computeVariance()
         self.sd = self.computeStandardDeviation()
 
-
-x = Statistic('the')
-x.update("The pen is mightier than the sword".lower())
-
+# Initiate array of Statistics objects with every combo of 1, 2, 3, and 4 characters. 475254 total objects
 statistics = []
-
-# Create array of Statistics objects with every combo of 1, 2, 3, and 4 characters. 475254 total objects
 for letter1 in alphabet:
     statistics.append(Statistic(letter1))
     for letter2 in alphabet:
         statistics.append(Statistic(letter1 + letter2))
-        for letter3 in alphabet:
-            statistics.append(Statistic(letter1 + letter2 + letter3))
-            for letter4 in alphabet:
-                statistics.append(Statistic(letter1+letter2+letter3+letter4))
+        # for letter3 in alphabet:
+        #     statistics.append(Statistic(letter1 + letter2 + letter3))
+        #     for letter4 in alphabet:
+        #         statistics.append(Statistic(letter1+letter2+letter3+letter4))
 
 # Creates an array of length len(s) with a 1 if letter appears and a 0 otherwise
 def indicator(s, letter):
@@ -84,10 +86,50 @@ def indicator(s, letter):
             distribution.append(0)
     return distribution
 
-# Work in progress lol
-def letterDistanceInSentence(s, letter1, letter2):
-    dist1 = indicator(s, letter1)
-    dist2 = indicator(s, letter2)
 
-for statistic in statistics:
-    statistic.update("Sometimes I can feel my bones straining under the weight of all the lives I’m not living")
+
+
+
+
+# Create GUI
+top_level_gui = tk.Tk()
+
+# Add title to GUI
+top_level_gui.title("English Language Interpreter")
+
+# Set GUI default size
+top_level_gui.geometry("800x300")
+
+# Labels
+label_sentence_input = tk.Label(top_level_gui, text="Enter sentence to train: ", font=("Times New Roman", 20))
+label_sentence_input.grid(column=0, row=0)
+
+# Buttons
+button_submit_sentence = tk.Button(top_level_gui, text="Submit", font=("Times New Roman", 20), command=update_statistics)
+button_submit_sentence.grid(column=3, row=0)
+
+# Entry fields
+entry_sentence = tk.Entry(top_level_gui, width=50)
+entry_sentence.grid(column=1, row=0)
+
+# Menus
+menu = tk.Menu(top_level_gui)
+new_item = tk.Menu(menu)
+
+commmon_words = ["The", "And", "How","Nick"]
+
+
+def show_statistics(word):
+    pass
+
+
+for word in commmon_words:
+    new_item.add_command(label=word, command=show_statistics(word))
+
+menu.add_cascade(label='Common words', menu=new_item)
+
+top_level_gui.config(menu=menu)
+
+# Run GUI
+top_level_gui.mainloop()
+
