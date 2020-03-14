@@ -2,6 +2,7 @@ import re
 import math
 import tkinter as tk
 
+
 # Design neural network to determine if given sentence is in English. I need to figure out a way to
 # allow different sized strings for input into the neural network.
 # Possible outline
@@ -23,6 +24,7 @@ def update_statistics():
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
+
 # Create class which keeps track of statistical information about each letter combo.
 class Statistic:
     def __init__(self, chars):
@@ -37,7 +39,7 @@ class Statistic:
         self.sentence = ''
 
     def computeAverage(self):
-        self.avg = (self.avg*(self.num_sentences-1)+self.numberOfOccurences())/self.num_sentences
+        self.avg = (self.avg * (self.num_sentences - 1) + self.numberOfOccurences()) / self.num_sentences
         return self.avg
 
     # Use Regex to find and return the number of occurrences of self.chars within sentence
@@ -48,9 +50,9 @@ class Statistic:
 
     def computeVariance(self):
         self.sum += self.num_occurrences_history[-1]
-        self.squared_sum += self.num_occurrences_history[-1]**2
+        self.squared_sum += self.num_occurrences_history[-1] ** 2
         if self.num_sentences > 1:
-            self.variance = (self.squared_sum - self.sum/self.num_sentences)/(self.num_sentences-1)
+            self.variance = (self.squared_sum - self.sum / self.num_sentences) / (self.num_sentences - 1)
         return self.variance
 
     def computeStandardDeviation(self):
@@ -65,16 +67,17 @@ class Statistic:
         self.variance = self.computeVariance()
         self.sd = self.computeStandardDeviation()
 
+
 # Initiate array of Statistics objects with every combo of 1, 2, 3, and 4 characters. 475254 total objects
 statistics = []
 for letter1 in alphabet:
     statistics.append(Statistic(letter1))
     for letter2 in alphabet:
         statistics.append(Statistic(letter1 + letter2))
-        # for letter3 in alphabet:
-        #     statistics.append(Statistic(letter1 + letter2 + letter3))
-        #     for letter4 in alphabet:
-        #         statistics.append(Statistic(letter1+letter2+letter3+letter4))
+        for letter3 in alphabet:
+            statistics.append(Statistic(letter1 + letter2 + letter3))
+            # for letter4 in alphabet:
+            #     statistics.append(Statistic(letter1+letter2+letter3+letter4))
 
 # Creates an array of length len(s) with a 1 if letter appears and a 0 otherwise
 def indicator(s, letter):
@@ -85,10 +88,6 @@ def indicator(s, letter):
         else:
             distribution.append(0)
     return distribution
-
-
-
-
 
 
 # Create GUI
@@ -105,7 +104,8 @@ label_sentence_input = tk.Label(top_level_gui, text="Enter sentence to train: ",
 label_sentence_input.grid(column=0, row=0)
 
 # Buttons
-button_submit_sentence = tk.Button(top_level_gui, text="Submit", font=("Times New Roman", 20), command=update_statistics)
+button_submit_sentence = tk.Button(top_level_gui, text="Submit", font=("Times New Roman", 20),
+                                   command=update_statistics)
 button_submit_sentence.grid(column=3, row=0)
 
 # Entry fields
@@ -114,22 +114,32 @@ entry_sentence.grid(column=1, row=0)
 
 # Menus
 menu = tk.Menu(top_level_gui)
-new_item = tk.Menu(menu)
+words_menu = tk.Menu(menu)
 
-commmon_words = ["The", "And", "How","Nick"]
+common_words = ["The", "And", "How"]
+current_word = ''
 
-
+# Shows statistics for word on GUI
 def show_statistics(word):
-    pass
+    for statistic in statistics:
+        if statistic.chars == word.lower():
+            word_stat = statistic
+    label_word = tk.Label(top_level_gui, text=word_stat.chars, font=("Times New Roman", 20))
+    label_word.grid(column=0, row=1)
+    label_avg = tk.Label(top_level_gui, text=word_stat.avg, font=("Times New Roman", 20))
+    label_avg.grid(column=1, row=1)
+    label_sd = tk.Label(top_level_gui, text=word_stat.sd, font=("Times New Roman", 20))
+    label_sd.grid(column=2, row=1)
 
+# Adds Common words menu to menu bar
+menu.add_cascade(label='Common words', menu=words_menu)
 
-for word in commmon_words:
-    new_item.add_command(label=word, command=show_statistics(word))
+# Adds each word of common_words to the words_menu
+for word in common_words:
+    words_menu.add_command(label=word, command=lambda word=word: show_statistics(word))
 
-menu.add_cascade(label='Common words', menu=new_item)
-
+# Configures menu to the menu bar
 top_level_gui.config(menu=menu)
 
 # Run GUI
 top_level_gui.mainloop()
-
